@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>label标签</title>
+</head>
+<body>
+<p>示例1: continue 和 break</p>
+<button onclick="demo1()">点击触发示例1</button>
+<p>结果：continue跳过循环中的这一项，继续下一项；break跳出当前循环</p>
+<br />
+
+<p>示例2: break跳出当前标签</p>
+<button onclick="demo2()">点击触发示例2</button>
+<p>结果：跳出当前标签</p>
+<br />
+
+<p>示例3: 在循环内部使用break label，跳出当前标签</p>
+<button onclick="demo3()">点击触发示例3</button>
+<p>结果：跳出当前标签</p>
+<br />
+
+<p>示例4: 在swich中使用 break 和 break label的区别</p>
+<button onclick="demo4()">点击触发示例4</button>
+<p>结果：break跳出case语句，break label跳出当前标签</p>
+<br />
+
+<script>
+    function demo1() {
+        var i;
+        for (i = 0; i < 15; i = i + 1) {
+            if (i < 5) {
+                continue;
+            }
+            if (i++ > 10) {
+                break;
+            }
+        }
+        alert(i);
+    }
+    function demo2() {
+        var i = 0;
+        my_label: {
+            i = i + 1;
+            break my_label;
+            i = 0;
+        }
+        alert(i);
+    }
+    function demo3() {
+        var i = 0;
+        my_label: {
+            i = i + 1;
+            while (true) {
+                break my_label;
+            }
+            i = 0;
+        }
+        alert(i);
+    }
+    function demo4() {
+        var i = 0;
+        my_label: {
+            i = i + 1;
+            switch (true) {
+                case false:
+                    break;
+                case true:
+                    break my_label;
+            }
+            i = 0;
+        }
+        alert(i);
+    }
+</script>
+</body>
+</html>
