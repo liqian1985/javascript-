@@ -25,6 +25,13 @@
 <p>结果：break跳出case语句，break label跳出当前标签</p>
 <br />
 
+<p>示例5: 九九乘法表</p>
+<button onclick="demo5()">点击触发示例5</button>
+<br />
+
+<p>示例6: 杨辉三角</p>
+<button onclick="demo6(20)">点击触发示例6</button>
+<br />
 <script>
     function demo1() {
         var i;
@@ -71,6 +78,57 @@
             i = 0;
         }
         alert(i);
+    }
+    function demo5() {
+        var i,
+            k,
+            kl = '';
+        for (i = 1; i < 10; i = i + 1) {          
+            for (k = 1; k <= i; k = k + 1) {
+                kl += k + '*' + i + '=' + (k*i) + ' ';            
+            } 
+			kl = kl + '\n';   
+        }
+        console.log(kl); 
+    }
+	function demo6(level) {
+        var i,
+		    j,
+			yh = [],
+            mastlength = 0;
+        function format(arr, mastlength) {
+            var k, l, n, m, s2, spaceNum = '', num = '', mast = mastlength.length;
+            for(k = 0; k < arr.length; k = k + 1) {
+                num = '';
+                s2 = '';
+                for(l = 0; l <= arr[k].length - 1; l = l + 1) {
+                    num += String(arr[k][l]) + ' ';
+                    spaceNum = '';
+                    for (n = 0; n <= parseInt((mast.length - String(arr[k][l]).length) / 2, 10); n = n + 1) {
+                        spaceNum += ' ';
+                    }
+                    num = spaceNum + num + spaceNum;
+                }
+                console.log(num);
+            }
+        }
+        //返回二维数组
+		for(i = 0; i < level; i = i + 1) {
+			yh[i] = [];
+			for(j = 0; j <= i; j = j + 1) {
+
+				if( i== j || j == 0) {
+					yh[i][j] = 1;
+				} else {
+					yh[i][j] = yh[i - 1][j] + yh[ i- 1][j - 1];
+				}
+                if (yh[i][j] > mastlength) {
+                    mastlength = String(yh[i][j]);
+                }
+			}
+
+		}
+        format(yh, mastlength);
     }
 </script>
 </body>

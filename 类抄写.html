@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>类抄写</title>
+</head>
+<body>
+<div style="padding: 30px; line-height: 1.5;">
+    <p>
+        这个例子的独特之处在于:我们用 extent()来维护了一个 baseConstructor 成员,这个成员总是指向父类的构造器。而子类实例的构造逻辑就变成了:先向父类传入 this 引用以抄写父类方法,再向子类传入 this 引用以抄写子类方法 (如 Animal.say 等方法);后者覆盖前者中的同名成员(如 Cat.eat 方法)。由
+    于整个构造过程,都是在不断地从“类构造器”向“this 引用”抄写成员,所以我们将这种方法称为 “类抄写 ”。
+    </p>
+    <p>
+在这样的构建过程中,不但能通过修改 this 引用来添加、改写子类成员(例 如在 Cat()中重写 eat 方法),也可以通过抄写具有所有父代类的成员。通过这样的方法,我们可以用“类抄写 ”的方法来构建复杂的对象系统。
+    </p>
+</div>
+<script>
+    //公共函数：子类派生
+    extend = function (subClass, baseClass) {
+        //暂存父类构造器
+        subClass.baseConstructor = baseClass;
+        subClass.base = {};
+        //复制父类特性（属性与方法）
+        baseClass.call(subClass.base);
+    }
+    //构建对象系统
+    function Mouse() {
+        //测试用
+    }
+    function Animal(name) {
+        this.name = name;
+        this.say = function (message) {
+            console.log(this.name + ': ' + message);
+        }
+        this.eat = function () {
+            this.say('Yum!');
+        }
+    }
+    function Cat () {
+        Cat.baseConstructor.call(this, 'cat');
+        this.eat = function (food) {
+            if (food instanceof Mouse) {
+                Cat.base.eat.call(this);
+            } else {
+                this.say('Yuk! I only eat mice - not' + food.name);
+            }
+        }
+    }
+    extend(Cat, Animal);
+    function Lion () {
+        Lion.baseConstructor.call(this, 'lion');
+    }
+    extend(Lion, Cat);
+    //测试
+    var cat = new Cat();
+    var lion = new Lion();
+    var mouse = new Mouse();
+    var unknowObj = {};
+
+    cat.eat(mouse); //Yum!
+    cat.eat(unknowObj); //Yuk!
+    lion.eat(mouse); //Yum!
+</script>
+</body>
+</html>
